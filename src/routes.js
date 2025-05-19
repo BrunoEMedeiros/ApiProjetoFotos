@@ -50,4 +50,26 @@ routes.post('/usuario', async (req, res) =>{
     }
 })
 
+routes.post('/imagem', async (req, res) =>{
+    try{
+        await sql`insert into Imagens(name, mimetype, data) 
+        values(${req.files.imagem.name}, ${req.files.imagem.mimetype}, ${req.files.imagem.data})`
+        return res.status(201).json('ok')
+    }
+    catch(error){
+        console.log(error)
+        return res.status(500).json('Error at inserting')
+    }
+})
+
+routes.get('/imagens', async (req, res) =>{
+    try {
+        const imagens = await sql`select * from Imagens`
+        return res.status(200).json(imagens)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json('Error at fetch images')
+    }
+})
+
 export default routes
